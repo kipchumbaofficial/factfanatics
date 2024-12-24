@@ -35,10 +35,10 @@ class Score(db.Model):
     __tablename__ = 'scores'
 
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForegignKey('users.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     category_id = db.Column(db.Integer, db.ForeignKey('categories.id'))
     score = db.Column(db.Integer, nullable=False)
-    created_at = db.Column(db.Datetime, default=datetime.now)
+    created_at = db.Column(db.DateTime, default=datetime.now)
 
     def __repr__(self):
         """
