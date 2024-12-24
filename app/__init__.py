@@ -7,7 +7,9 @@ App configuration
 from flask import Flask
 from .config import Config
 from .extensions import db, migrate, bcrypt, login_manager
-from .models.user import User
+from .models.user import User, Score
+from .models.resources import Category, Question, CategoryQuestion, Comment
+from .blueprints.main import main_bp
 
 
 def create_app(config_class=Config):
@@ -35,5 +37,6 @@ def create_app(config_class=Config):
         return User.query.get(int(user_id))
 
     # Register Blueprints
+    app.register_blueprint(main_bp)
 
     return app

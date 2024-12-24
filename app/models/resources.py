@@ -13,9 +13,9 @@ class Category(db.Model):
     __tablename__ = 'categories'
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(50), unique='True', nullable=False)
+    name = db.Column(db.String(50), unique=True, nullable=False)
     parent_id = db.Column(db.Integer, db.ForeignKey('categories.id'))
-    created_at = db.Column(db.Datetime, default=datetime.now)
+    created_at = db.Column(db.DateTime, default=datetime.now)
 
     # Relationships
     parent = db.relationship('Category', remote_side=[id], back_populates='subcategories')
@@ -29,13 +29,15 @@ class Question(db.Model):
     '''Question:
     Represents questions in the database
     '''
+    __tablename__ = 'questions'
+    
     id = db.Column(db.Integer, primary_key=True)
     question = db.Column(db.Text, nullable=False )
     answer = db.Column(db.String(255), nullable=False)
     difficulty = db.Column(db.String(20), default='easy', nullable=False)
     source = db.Column(db.String(50), nullable=False)
     link = db.Column(db.Text, nullable=False)
-    created_at = db.Column(db.Datetime, default=datetime.now)
+    created_at = db.Column(db.DateTime, default=datetime.now)
 
     # Relationship
     category_questions = db.relationship('CategoryQuestion', back_populates='questions')
@@ -66,6 +68,6 @@ class Comment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     threshold = db.Column(db.Integer, nullable=False)
     comment = db.Column(db.Text, nullable=False)
-    created_at = db.Column(db.Datetime, default=datetime.now)
+    created_at = db.Column(db.DateTime, default=datetime.now)
 
     user_comments = db.relationship('UserComment', back_populates='comment')
