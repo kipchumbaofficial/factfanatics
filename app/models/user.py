@@ -18,9 +18,19 @@ class User(UserMixin, db.Model):
     is_admin = db.Column(db.Boolean, default=False)
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.now)
 
-    scores = db.relationship('Score', back_populates='user', cascade='all, delete-orphan')
-    comments = db.relationship('UserComment', back_populates='user', cascade='all, delete-orphan')
-    answers = db.relationship('UserAnswer', back_populates='user', cascade='all, delete-orphan') 
+    # Relationships
+    scores = db.relationship(
+        'Score',
+        back_populates='user',
+        cascade='all, delete-orphan')
+    comments = db.relationship(
+        'UserComment',
+        back_populates='user',
+        cascade='all, delete-orphan')
+    answers = db.relationship(
+        'UserAnswer',
+        back_populates='user',
+        cascade='all, delete-orphan')
 
     def __repr__(self):
         """
@@ -36,8 +46,14 @@ class Score(db.Model):
     __tablename__ = 'scores'
 
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'), nullable=False, index=True)
-    category_id = db.Column(db.Integer, db.ForeignKey('categories.id', ondelete='CASCADE'), nullable=False, index=True)
+    user_id = db.Column(
+        db.Integer,
+        db.ForeignKey('users.id', ondelete='CASCADE'),
+        nullable=False, index=True)
+    category_id = db.Column(
+        db.Integer,
+        db.ForeignKey('categories.id', ondelete='CASCADE'),
+        nullable=False, index=True)
     score = db.Column(db.Integer, nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.now)
 
@@ -56,8 +72,14 @@ class UserComment(db.Model):
     Associative table for users and comments
     '''
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'), nullable=False, index=True)
-    comment_id = db.Column(db.Integer, db.ForeignKey('comments.id', ondelete='CASCADE'), nullable=False, index=True)
+    user_id = db.Column(
+        db.Integer,
+        db.ForeignKey('users.id', ondelete='CASCADE'),
+        nullable=False, index=True)
+    comment_id = db.Column(
+        db.Integer,
+        db.ForeignKey('comments.id', ondelete='CASCADE'),
+        nullable=False, index=True)
 
     user = db.relationship('User', back_populates='comments')
     comment = db.relationship('Comment', back_populates='user_comments')
@@ -76,8 +98,16 @@ class UserAnswer(db.Model):
     __tablename__ = 'user_answers'
 
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'), nullable=False, index=True)
-    question_id = db.Column(db.Integer, db.ForeignKey('questions.id', ondelete='CASCADE'), nullable=False, index=True)
+    user_id = db.Column(
+        db.Integer,
+        db.ForeignKey('users.id', ondelete='CASCADE'),
+        nullable=False,
+        index=True)
+    question_id = db.Column(
+        db.Integer,
+        db.ForeignKey('questions.id', ondelete='CASCADE'),
+        nullable=False,
+        index=True)
     user_answer = db.Column(db.String(255))
     is_correct = db.Column(db.Boolean, nullable=False)
     answered_at = db.Column(db.DateTime, default=datetime.now)

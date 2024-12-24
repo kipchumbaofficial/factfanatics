@@ -14,14 +14,30 @@ class Category(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), unique=True, nullable=False)
-    parent_id = db.Column(db.Integer, db.ForeignKey('categories.id', ondelete='CASCADE'), index=True)
+    parent_id = db.Column(
+        db.Integer,
+        db.ForeignKey('categories.id', ondelete='CASCADE'),
+        index=True)
     created_at = db.Column(db.DateTime, default=datetime.now)
 
     # Relationships
-    parent = db.relationship('Category', remote_side=[id], back_populates='subcategories', cascade='all, delete-orphan')
-    subcategories = db.relationship('Category', back_populates='parent', cascade='all, delete-orphan')
-    category_questions = db.relationship('CategoryQuestion', back_populates='category', cascade='all, delete-orphan')
-    scores = db.relationship('Score', back_populates='category', cascade='all, delete-orphan')
+    parent = db.relationship(
+        'Category',
+        remote_side=[id],
+        back_populates='subcategories',
+        cascade='all, delete-orphan')
+    subcategories = db.relationship(
+        'Category',
+        back_populates='parent',
+        cascade='all, delete-orphan')
+    category_questions = db.relationship(
+        'CategoryQuestion',
+        back_populates='category',
+        cascade='all, delete-orphan')
+    scores = db.relationship(
+        'Score',
+        back_populates='category',
+        cascade='all, delete-orphan')
 
     def __repr__(self):
         """
@@ -38,7 +54,7 @@ class Question(db.Model):
     __tablename__ = 'questions'
 
     id = db.Column(db.Integer, primary_key=True)
-    question = db.Column(db.Text, nullable=False )
+    question = db.Column(db.Text, nullable=False)
     answer = db.Column(db.String(255), nullable=False)
     difficulty = db.Column(db.String(20), default='easy', nullable=False)
     source = db.Column(db.String(50), nullable=False)
@@ -46,8 +62,14 @@ class Question(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.now)
 
     # Relationship
-    category_questions = db.relationship('CategoryQuestion', back_populates='questions', cascade='all, delete-orphan')
-    user_answers = db.relationship('UserAswer', back_populates='question', cascade='all, delete-orphan')
+    category_questions = db.relationship(
+        'CategoryQuestion',
+        back_populates='questions',
+        cascade='all, delete-orphan')
+    user_answers = db.relationship(
+        'UserAswer',
+        back_populates='question',
+        cascade='all, delete-orphan')
 
     def __repr__(self):
         """
@@ -63,8 +85,16 @@ class CategoryQuestion(db.Model):
     __tablename__ = 'category_questions'
 
     id = db.Column(db.Integer, primary_key=True)
-    category_id = db.Column(db.Integer, db.ForeignKey('categories.id', ondelete='CASCADE'), nullable=False, index=True)
-    question_id = db.Column(db.Integer, db.ForeignKey('questions.id', ondelete='CASCADE'), nullable=False, index=True)
+    category_id = db.Column(
+        db.Integer,
+        db.ForeignKey('categories.id', ondelete='CASCADE'),
+        nullable=False,
+        index=True)
+    question_id = db.Column(
+        db.Integer,
+        db.ForeignKey('questions.id', ondelete='CASCADE'),
+        nullable=False,
+        index=True)
 
     category = db.relationship('Category', back_populates='category_questions')
     question = db.relationship('Question', back_populates='category_questions')
@@ -73,7 +103,8 @@ class CategoryQuestion(db.Model):
         """
         Returns a string representation of the CategoryQuestion instance.
         """
-        return f"<CategoryQuestion(Category ID: {self.category_id}, Question ID: {self.question_id})>"
+        return (f"<CategoryQuestion(Category ID: {self.category_id}, "
+                f"Question ID: {self.question_id})>")
 
 
 # Comments Table
@@ -89,7 +120,10 @@ class Comment(db.Model):
     comment = db.Column(db.Text, nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.now)
 
-    user_comments = db.relationship('UserComment', back_populates='comment',  cascade='all, delete-orphan')
+    user_comments = db.relationship(
+        'UserComment',
+        back_populates='comment',
+        cascade='all, delete-orphan')
 
     def __repr__(self):
         """
