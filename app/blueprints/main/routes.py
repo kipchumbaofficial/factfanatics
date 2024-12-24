@@ -11,5 +11,6 @@ def home():
     '''Home route
     '''
     return jsonify({
+        'message': 'Welcome to factsfantics',
         'Tagline': 'Factfanatics smoking facts yall be smoking make belief'
         })
