@@ -52,13 +52,16 @@ class Score(db.Model):
         nullable=False, index=True)
     category_id = db.Column(
         db.Integer,
-        db.ForeignKey('categories.id', ondelete='CASCADE'),
+        db.ForeignKey('categories.id'),
         nullable=False, index=True)
     score = db.Column(db.Integer, nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.now)
 
     # Relationship
     user = db.relationship('User', back_populates='scores')
+    category = db.relationship(
+        'Category',
+        back_populates='scores')
 
     def __repr__(self):
         """

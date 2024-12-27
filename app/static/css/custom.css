@@ -1,0 +1,12 @@
+/* Custom styles for flash messages */
+.info {
+    color: #31708f;
+}
+
+.success {
+    color: #3c763d;
+}
+
+.error {
+    color: #a94442;
+}
