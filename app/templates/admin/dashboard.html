@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="bg-black min-h-screen py-8 px-4">
+    <div class="container w-full mx-auto">
+
+         <!-- Flash messages -->
+         {% with messages = get_flashed_messages(with_categories=true) %}
+         {% if messages %}
+             <div class="flash-messages mb-6">
+                 {% for category, message in messages %}
+                     <div class="text-center text-sm rounded-lg shadow-lg p-4 mb-4 {{'info' if category == 'info' else 'success' if category == 'success' else 'error'}}" role="alert">
+                         {{ message }}
+                     </div>
+                 {% endfor %}
+             </div>
+         {% endif %}
+        {% endwith %}
+
+        <div class="bg-white w-full shadow-lg rounded-lg">
+            <!-- Navbar -->
+			<nav class="px-4 lg:px-12">
+				<div class="flex justify-between items-center h-16">
+					<!-- Left Section: Home Link -->
+					<a href="#" class="text-orange-600 text-2xl font-bold">Factfanatics.</a>
+
+					<!-- Middle Section: Links for Desktop -->
+					<div class="hidden sm:flex space-x-8">
+                        <a href="#categories" class="text-gray-600 hover:text-orange-600">Categories</a>
+						<a href="#questions" class="text-gray-600 hover:text-orange-600">Questions</a>
+						<a href="#comments" class="text-gray-600 hover:text-orange-600">Comments</a>
+					</div>
+
+					<!-- Right Section: Logout & Mobile Menu Button -->
+					<div class="flex items-center space-x-4">
+                        <p class="hidden sm:inline-block border text-black border-red-500 font-semibold px-3 py-1 rounded-full text-xs mb-1">logout</p>
+                        <!--
+                        <button class="hidden sm:block bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition duration-300">Logout</button>
+                        --->
+                        <button id="menu-toggle" class="sm:hidden text-orange-600 text-2xl focus:outline-none">
+							<i class="fas fa-bars"></i>
+						</button>
+					</div>
+				</div>
+
+				<!-- Mobile Menu -->
+				<div id="mobile-menu" class="hidden sm:hidden bg-white shadow-lg">
+                    <a href="#categories" class="block px-4 py-2 text-gray-600 hover:bg-orange-100">Categories</a>
+					<a href="#questions" class="block px-4 py-2 text-gray-600 hover:bg-orange-100">Questions</a>
+					<a href="#comments" class="block px-4 py-2 text-gray-600 hover:bg-orange-100">Comments</a>
+					<a href="#" class="block px-4 py-2 rounded-b-lg bg-red-500 text-white hover:bg-red-600">Logout</a>
+				</div>
+			</nav>
+            <div class="p-4 lg:p-16 grid gap-6 md:grid-cols-2">
+                <!-- Categories -->
+                <div class="bg-black text-white rounded-xl p-6 flex flex-col justify-between shadow-lg">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h3 class="text-xl font-semibold">Categories
+                                <button id="openModal"><i class="fa-solid fa-arrow-up-right-from-square text-black text-sm ml-2 bg-green-500 rounded-full p-1.5"></i></button>
+                            </h3>
+                            <p class="text-sm text-gray-400">Updated 1 day ago</p>
+                        </div>
+                       
+                    </div>
+                    <div class="mt-10 flex items-end justify-between">
+                        <div>
+                            <p class="text-sm text-gray-400">Total
+                                <i class="fa-regular fa-eye"></i>
+                            </p>
+                            <div class="text-3xl font-bold">1</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Questions-->
+                <div class="bg-black text-white rounded-xl p-6 flex flex-col justify-between shadow-lg">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h3 class="text-xl font-semibold">Questions
+                                <button id="openModal"><i class="fa-solid fa-arrow-up-right-from-square text-black text-sm ml-2 bg-green-500 rounded-full p-1.5"></i></button>
+                            </h3>
+                            <p class="text-sm text-gray-400">Updated 1 day ago</p>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <select class="border bg-transparent border-gray-600 text-gray-700 text-sm py-1 px-2 rounded-full mt-1">
+                                <option>Football</option>
+                                <option>Music</option>
+                                <option>Basketball</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mt-10 flex items-end justify-between">
+                        <div>
+                            <p class="text-sm text-gray-400">Total
+                                <i class="fa-regular fa-eye"></i>
+                            </p>
+                            <div class="text-3xl font-bold">2,025</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    document.getElementById("menu-toggle").addEventListener("click", function() {
+		var mobileMenu = document.getElementById("mobile-menu");
+		mobileMenu.classList.toggle("hidden");
+	});
+      // Modal toggle functionality
+      document.getElementById('openArticleModal').addEventListener('click', function() {
+        document.getElementById('articleModal').classList.remove('hidden');
+        document.getElementById('articleModal').classList.add('flex');
+    });
+
+    document.getElementById('closeArticleModal').addEventListener('click', function() {
+        document.getElementById('articleModal').classList.add('hidden');
+    });
+
+</script>
+{% endblock %}

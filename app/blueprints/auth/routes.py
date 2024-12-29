@@ -48,3 +48,46 @@ def login():
             'status': 'error',
             'message': 'Login failed.'
         }), 401
+
+
+@auth_bp.route('/initialize', methods=['POST'])
+def initialize_admin():
+    """ Create a new admin
+    """
+    # Register the first admin
+    try:
+        # Get the ID token from the request
+        id_token = request.json.get('id_token')
+
+        # Verify the ID token using Firebase Admin SDk
+        decoded_token = firebase_auth.verify_id_token(id_token)
+        user_email = decoded_token.get('email')
+        user_name = decoded_token.get('name')
+
+        # Check if the user exists in the database
+        user = User.query.filter_by(email=user_email).first()
+        if user:
+            user.is_admin = True
+        if not user:
+            # If the user doesn't exist create a new user
+            user = User(
+                username=user_name,
+                email=user_email,
+                is_admin=True
+            )
+            db.session.add(user)
+        db.session.commit()
+
+        # Log the user in using Flask-Login
+        login_user(user, remember=True)
+
+        # Return JSON success response
+        return jsonify({
+            'status': 'success',
+            'message': 'User logged in successfully'
+        })
+    except (ValueError, KeyError, SQLAlchemyError):
+        return jsonify({
+            'status': 'error',
+            'message': 'Login failed.'
+        }), 401
