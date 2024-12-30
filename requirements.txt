@@ -7,3 +7,4 @@ flask_login
 mysqlclient
 email_validator
 python-dotenv
+firebase_admin

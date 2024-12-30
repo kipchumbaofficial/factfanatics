@@ -16,7 +16,7 @@ class Category(db.Model):
     name = db.Column(db.String(50), unique=True, nullable=False)
     parent_id = db.Column(
         db.Integer,
-        db.ForeignKey('categories.id', ondelete='CASCADE'),
+        db.ForeignKey('categories.id'),
         index=True)
     created_at = db.Column(db.DateTime, default=datetime.now)
 
@@ -24,8 +24,7 @@ class Category(db.Model):
     parent = db.relationship(
         'Category',
         remote_side=[id],
-        back_populates='subcategories',
-        cascade='all, delete-orphan')
+        back_populates='subcategories')
     subcategories = db.relationship(
         'Category',
         back_populates='parent',
@@ -66,8 +65,8 @@ class Question(db.Model):
         'CategoryQuestion',
         back_populates='questions',
         cascade='all, delete-orphan')
-    user_answers = db.relationship(
-        'UserAswer',
+    user_answer = db.relationship(
+        'UserAnswer',
         back_populates='question',
         cascade='all, delete-orphan')
 
@@ -97,7 +96,7 @@ class CategoryQuestion(db.Model):
         index=True)
 
     category = db.relationship('Category', back_populates='category_questions')
-    question = db.relationship('Question', back_populates='category_questions')
+    questions = db.relationship('Question', back_populates='category_questions')
 
     def __repr__(self):
         """
