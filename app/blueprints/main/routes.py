@@ -12,8 +12,16 @@ def home():
     '''
     return render_template('home.html')
 
+
 @main_bp.route('/login', methods=['GET'])
 def login():
     """ Log in page
     """
     return render_template('login.html')
+
+
+@main_bp.route('/play')
+def categories():
+    '''Home route
+    '''
+    return render_template('categories.html')

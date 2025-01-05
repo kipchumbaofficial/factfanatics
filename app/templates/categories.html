@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="bg-blue-500 min-h-screen flex flex-col">
+  <!-- Header Section -->
+  <header class="container mx-auto px-4 py-6 flex justify-between items-center">
+    <h1 class="text-white text-3xl font-bold">Let’s Play</h1>
+    <div class="flex space-x-4">
+      <a href="#" class="text-white text-2xl"><i class="fas fa-heart"></i></a>
+      <a href="#" class="text-white text-2xl"><i class="fas fa-user"></i></a>
+      <a href="#" class="text-white text-2xl"><i class="fas fa-bars"></i></a>
+    </div>
+  </header>
+
+  <!-- Subtitle -->
+  <p class="container mx-auto px-4 text-white text-lg">Pick a category and play!</p>
+
+  <!-- Categories Section -->
+  <main class="container mx-auto px-4 py-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+    <!-- Category Card: Football -->
+    <a href="#" class="bg-gradient-to-r from-green-400 to-blue-400 rounded-lg p-6 flex items-center space-x-4 shadow-lg">
+      <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center">
+        <i class="fas fa-futbol text-green-500 text-3xl"></i>
+      </div>
+      <div>
+        <h2 class="text-white text-2xl font-bold">Football</h2>
+        <p class="text-white">Level 1: Beginner</p>
+      </div>
+    </a>
+
+    <!-- Category Card: Music -->
+    <a href="#" class="bg-gradient-to-r from-pink-400 to-purple-400 rounded-lg p-6 flex items-center space-x-4 shadow-lg">
+      <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center">
+        <i class="fas fa-music text-pink-500 text-3xl"></i>
+      </div>
+      <div>
+        <h2 class="text-white text-2xl font-bold">Music</h2>
+        <p class="text-white">Coming Soon!</p>
+      </div>
+    </a>
+
+    <!-- Category Card: Basketball -->
+    <a href="#" class="bg-gradient-to-r from-orange-400 to-yellow-400 rounded-lg p-6 flex items-center space-x-4 shadow-lg">
+      <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center">
+        <i class="fas fa-basketball-ball text-orange-500 text-3xl"></i>
+      </div>
+      <div>
+        <h2 class="text-white text-2xl font-bold">Basketball</h2>
+        <p class="text-white">Coming Soon!</p>
+      </div>
+    </a>
+
+    <!-- Category Card: General Knowledge -->
+    <a href="#" class="bg-gradient-to-r from-blue-500 to-indigo-500 rounded-lg p-6 flex items-center space-x-4 shadow-lg">
+      <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center">
+        <i class="fas fa-globe text-blue-500 text-3xl"></i>
+      </div>
+      <div>
+        <h2 class="text-white text-2xl font-bold">General Knowledge</h2>
+        <p class="text-white">Coming Soon!</p>
+      </div>
+    </a>
+  </main>
+
+  <!-- Footer Section -->
+  <footer class="mt-auto py-4 text-center text-white">
+    <p>&copy; 2025 Fact Fanatics. All rights reserved.</p>
+  </footer>
+</div>
+{% endblock %}
