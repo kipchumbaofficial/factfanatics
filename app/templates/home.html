@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="bg-green-500 min-h-screen flex flex-col justify-between py-6 sm:py-12 px-4 sm:px-6 lg:px-8">
+  <!-- Navbar -->
+  <nav class="mb-3 lg:mb-12">
+    <div class="flex justify-between items-center h-16">
+      <!-- Left Section: Home Link -->
+      <a href="#" class="text-white text-2xl font-bold">FactFanatics.</a>
+
+      <!-- Middle Section: Links for Desktop -->
+      <div class="hidden sm:flex space-x-8">
+        <a href="#magazine" class="text-gray-600 hover:text-orange-600">Categories</a>
+        <a href="#articles" class="text-gray-600 hover:text-orange-600">Leaderboard</a>
+        <a href="#podcast" class="text-gray-600 hover:text-orange-600">Developers</a>
+        <a href="https://instagram.com/premier_magazine.ke" class="text-gray-600 hover:text-orange-600">Talk to us</a>
+      </div>
+
+      <!-- Right Section: Logout & Mobile Menu Button -->
+      <div class="flex items-center space-x-4">
+        <p class="hidden sm:inline-block border text-black border-black font-semibold px-3 py-1 rounded-full text-xs mb-1">Profile</p>
+        <!--
+        <button class="hidden sm:block bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition duration-300">Logout</button>
+        --->
+        <button id="menu-toggle" class="sm:hidden text-white text-2xl focus:outline-none">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="hidden sm:hidden bg-green-500 shadow-lg">
+      <a href="#" class="block px-4 py-2 text-gray-600 hover:bg-orange-100">Profile</a>
+      <a href="#" class="block px-4 py-2 text-gray-600 hover:bg-orange-100">Categories</a>
+      <a href="#" class="block px-4 py-2 text-gray-600 hover:bg-orange-100">Leaderboard</a>
+      <a href="#" class="block px-4 py-2 text-gray-600 hover:bg-orange-100">Leaderboard</a>
+      <a href="#" class="block px-4 py-2 text-gray-600 hover:bg-orange-100">Talk to us</a>
+      <a href="#" class="block px-4 py-2 bg-red-500 text-white hover:bg-red-600 rounded-b-lg">Logout</a>
+    </div>
+  </nav>
+
+  <!-- Main Section -->
+  <main class="container mx-auto flex flex-col-reverse md:flex-row items-center py-16">
+    <!-- Text Content -->
+    <div class="flex-1 text-center md:text-left mb-2">
+      <h1 class="text-6xl font-bold text-white leading-tight">Facts<span class="text-xs text-green-200">Fanatics</span> </h1>
+      <p class="text-lg text-white mt-4">
+        Think you have what it takes to be a Fact Fanatic?
+      </p>
+      <p class="text-white mt-2 flex items-center justify-center md:justify-start space-x-2">
+        <span>🌟</span>
+        <span>Join 2M+ top fans now! </span>
+      </p>
+      <div class="mt-6 flex justify-center md:justify-start space-x-4">
+        <a href="#" class="bg-black text-white px-6 py-3 rounded-lg">Play Now!</a>
+        <a href="#" class="text-black bg-white px-6 py-3 rounded-lg">Contribute</a>
+      </div>
+    </div>
+    <!-- Image Content -->
+    <div class="flex-1 relative">
+      <!-- Placeholder for main user image -->
+      <div class="w-full flex items-center justify-center">
+        <img src="{{ url_for('static', filename='images/landing-large.jpg') }}" alt="Fun Facts" class="rounded-xl h-[50vh] lg:h-[70vh] w-full shadow-lg">
+      </div>
+      <!-- Placeholder for sunglasses -->
+      <div class="absolute top-12 right-16 bg-white rounded-lg shadow-lg">
+        <div class="flex items-center justify-center">
+            <img src="{{ url_for('static', filename='images/landing-small.jpg') }}" alt="Facts" class="w-28 h-24 rounded-xl">
+        </div>
+      </div>
+      <!-- Placeholder for engagement card -->
+      <div class="absolute bottom-8 left-8 bg-yellow-400 text-black rounded-lg p-4 shadow-lg">
+        <p class="text-lg font-bold">+40%</p>
+        <p class="text-sm">Increased User Engagement</p>
+      </div>
+    </div>
+  </main>
+
+</div>
+<script>
+	document.getElementById("menu-toggle").addEventListener("click", function() {
+		var mobileMenu = document.getElementById("mobile-menu");
+		mobileMenu.classList.toggle("hidden");
+	});
+</script>
+{% endblock %}

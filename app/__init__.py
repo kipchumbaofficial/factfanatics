@@ -42,7 +42,7 @@ def create_app(config_class=Config):
     def load_user(user_id):
         """User Loader
         """
-        return User.query.get(int(user_id))
+        return User.query.get(int(user_id.split(":")[1]))
 
     # Register Blueprints
     app.register_blueprint(main_bp)

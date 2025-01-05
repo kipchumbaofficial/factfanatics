@@ -2,7 +2,7 @@
 ''' routes:
 Module for all the routes under main blueprint
 '''
-from flask import jsonify, render_template
+from flask import render_template
 from . import main_bp
 
 
@@ -10,10 +10,7 @@ from . import main_bp
 def home():
     '''Home route
     '''
-    return jsonify({
-        'message': 'Welcome to factsfantics',
-        'Tagline': 'Factfanatics smoking facts yall be smoking make belief'
-        })
+    return render_template('home.html')
 
 @main_bp.route('/login', methods=['GET'])
 def login():
