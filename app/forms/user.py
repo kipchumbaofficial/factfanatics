@@ -11,4 +11,4 @@ class AnswerForm(FlaskForm):
     For users to enter the answer
     '''
     answer = TextAreaField('Answer', validators=[DataRequired(), Length(max=500)])
-    submit = SubmitField('Add category')
+    submit = SubmitField('Submit')

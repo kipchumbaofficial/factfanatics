@@ -28,17 +28,14 @@
     </div>
 
     <!-- Answer Input -->
-    <form method="POST" action="/submit-answer" class="w-full flex flex-col items-center space-y-4">
-      <textarea 
-        name="answer" 
-        placeholder="Type your answer here..." 
-        class="w-full md:w-2/3 px-4 py-3 rounded-lg shadow-lg text-gray-800"
-        required
-      ></textarea>
-      <button type="submit" class="bg-yellow-400 text-blue-500 font-bold px-6 py-3 rounded-full shadow-lg hover:bg-yellow-300">
-        Submit
-      </button>
+    <form method="POST" action="{{ url_for('main.submit_answer', current=current_number - 1) }}" class="w-full flex flex-col items-center space-y-4">
+      <input type="hidden" name="question_id" value="{{ question.id }}">
+      <input type="hidden" name="current_index" value="{{ current_number }}">
+      {{ form.hidden_tag() }}
+      {{ form.answer(placeholder="Type your answer here...", class_="w-full md:w-2/3 px-4 py-3 rounded-lg shadow-lg text-gray-800") }}
+      {{ form.submit(class="bg-yellow-400 text-blue-500 font-bold px-6 py-3 rounded-full shadow-lg hover:bg-yellow-300")}}
     </form>
+    
   </main>
 
   <!-- Footer Section -->

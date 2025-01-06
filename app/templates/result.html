@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="bg-gradient-to-b from-purple-500 to-purple-300 min-h-screen flex flex-col items-center justify-center">
+  <!-- Results Header -->
+  <header class="w-full text-center py-6">
+    <p class="text-white text-lg font-semibold">Correct Answer {{ score }}/{{ total_questions }}</p>
+  </header>
+
+  <!-- Results Section -->
+  <main class="bg-white w-11/12 md:w-2/3 lg:w-1/2 rounded-lg shadow-lg p-6 flex flex-col items-center text-center">
+    <!-- User Profile Section -->
+    <div class="relative w-24 h-24 bg-purple-200 rounded-full overflow-hidden shadow-lg">
+      <img src="{{ url_for('static', filename='images/landing-large.jpg') }}" alt="Profile Picture" class="w-full h-full object-cover">
+    </div>
+    <div class="bg-purple-500 text-white text-center py-3 px-6 rounded-full mt-4">
+      <h2 class="text-lg font-bold">{{ username }}</h2>
+      <p class="text-2xl font-extrabold">Rank {{ rank }}</p>
+    </div>
+
+    <!-- Completion Message -->
+    <p class="text-gray-700 mt-6 text-lg font-medium">
+      Congratulations, you’ve completed this quiz!
+    </p>
+    <p class="text-gray-500 mt-2 text-sm">
+      Let’s keep testing your knowledge by playing more quizzes!
+    </p>
+
+    <!-- Explore More Button -->
+    <a href="/categories" class="bg-orange-500 text-white text-lg font-bold px-8 py-3 rounded-full mt-6 hover:bg-orange-400">
+      Explore More
+    </a>
+  </main>
+
+  <!-- Footer Section -->
+  <footer class="w-full text-center text-white mt-8">
+    <p>&copy; 2025 Fact Fanatics. All rights reserved.</p>
+  </footer>
+</div>
+{% endblock %}
