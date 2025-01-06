@@ -18,12 +18,12 @@
   <!-- Categories Section -->
   <main class="container mx-auto px-4 py-6 grid grid-cols-1 md:grid-cols-2 gap-6">
     <!-- Category Card: Football -->
-    <a href="#" class="bg-gradient-to-r from-green-400 to-blue-400 rounded-lg p-6 flex items-center space-x-4 shadow-lg">
+    <a href="{{ url_for('main.questions', category=categories[0].name) }}" class="bg-gradient-to-r from-green-400 to-blue-400 rounded-lg p-6 flex items-center space-x-4 shadow-lg">
       <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center">
         <i class="fas fa-futbol text-green-500 text-3xl"></i>
       </div>
       <div>
-        <h2 class="text-white text-2xl font-bold">Football</h2>
+        <h2 class="text-white text-2xl font-bold">{{ categories[0].name }}</h2>
         <p class="text-white">Level 1: Beginner</p>
       </div>
     </a>
@@ -34,7 +34,7 @@
         <i class="fas fa-music text-pink-500 text-3xl"></i>
       </div>
       <div>
-        <h2 class="text-white text-2xl font-bold">Music</h2>
+        <h2 class="text-white text-2xl font-bold">{{ categories[1].name }}</h2>
         <p class="text-white">Coming Soon!</p>
       </div>
     </a>
@@ -64,7 +64,7 @@
 
   <!-- Footer Section -->
   <footer class="mt-auto py-4 text-center text-white">
-    <p>&copy; 2025 Fact Fanatics. All rights reserved.</p>
+    <p>&copy; 2025 FactFanatics. All rights reserved.</p>
   </footer>
 </div>
 {% endblock %}
