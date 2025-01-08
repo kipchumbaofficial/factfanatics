@@ -10,10 +10,10 @@
 
       <!-- Middle Section: Links for Desktop -->
       <div class="hidden sm:flex space-x-6">
-        <a href="#magazine" class="text-gray-600 hover:text-orange-600 px-2">Categories</a>
-        <a href="#articles" class="text-gray-600 hover:text-orange-600 px-2">Leaderboard</a>
-        <a href="#podcast" class="text-gray-600 hover:text-orange-600 px-2">Developers</a>
-        <a href="https://instagram.com/premier_magazine.ke" class="text-gray-600 hover:text-orange-600 px-2">Talk to us</a>
+        <a href="#" class="text-gray-600 hover:text-orange-600 px-2">Categories</a>
+        <a href="#" class="text-gray-600 hover:text-orange-600 px-2">Leaderboard</a>
+        <a href="#" class="text-gray-600 hover:text-orange-600 px-2">Developers</a>
+        <a href="#" class="text-gray-600 hover:text-orange-600 px-2">Talk to us</a>
       </div>
 
       <!-- Right Section: Logout & Mobile Menu Button -->
@@ -28,11 +28,11 @@
     <!-- Mobile Menu -->
     <div id="mobile-menu" class="hidden sm:hidden bg-gradient-to-b from-blue-500 to-blue-300 shadow-lg">
       <a href="#" class="block px-4 py-2 text-gray-600 hover:bg-orange-100">Profile</a>
-      <a href="#magazine" class="block px-4 py-2 text-gray-600 hover:bg-orange-100">Categories</a>
-      <a href="#articles" class="block px-4 py-2 text-gray-600 hover:bg-orange-100">Leaderboard</a>
-      <a href="#podcast" class="block px-4 py-2 text-gray-600 hover:bg-orange-100">Developers</a>
-      <a href="https://instagram.com/premier_magazine.ke" class="block px-4 py-2 text-gray-600 hover:bg-orange-100">Talk to us</a>
-      <a href="#" class="block px-4 py-2 bg-red-500 text-white hover:bg-red-600 rounded-b-lg">Logout</a>
+      <a href="#" class="block px-4 py-2 text-gray-600 hover:bg-orange-100">Categories</a>
+      <a href="#" class="block px-4 py-2 text-gray-600 hover:bg-orange-100">Leaderboard</a>
+      <a href="#" class="block px-4 py-2 text-gray-600 hover:bg-orange-100">Developers</a>
+      <a href="#" class="block px-4 py-2 text-gray-600 hover:bg-orange-100">Talk to us</a>
+      <a href="{{ url_for('auth.logout') }}" class="block px-4 py-2 bg-red-500 text-white hover:bg-red-600 rounded-b-lg">Logout</a>
     </div>
   </nav>
 
@@ -71,26 +71,6 @@
       </div>
     </div>
     {% endfor %}
-
-    <!-- Duplicate and Update for Other Questions -->
-    <div class="bg-white rounded-lg shadow-md p-4 flex flex-col space-y-3">
-      <h2 class="text-gray-800 text-base font-bold">Question 2: What is the capital city of France?</h2>
-      <div class="flex justify-between items-center border-t pt-3">
-        <div class="flex items-center space-x-2">
-          <p class="text-gray-600 text-sm font-medium"><i class="fa-solid fa-wand-magic-sparkles"></i></p>
-          <span class="text-gray-800 font-bold">Lyon</span>
-          <i class="fas fa-times-circle text-red-500 text-lg"></i> <!-- X for incorrect -->
-        </div>
-        <div class="flex items-center space-x-2">
-          <p class="text-gray-600 text-sm font-medium">Correct:</p>
-          <span class="text-gray-800 font-bold">Paris</span>
-        </div>
-      </div>
-      <div class="flex justify-between items-center border-t pt-3">
-        <p class="text-gray-600 text-sm">Source: Britannica</p>
-        <a href="https://www.britannica.com" target="_blank" class="text-blue-500 hover:underline text-sm">Read more</a>
-      </div>
-    </div>
   </main>
 
   <!-- Footer Section -->

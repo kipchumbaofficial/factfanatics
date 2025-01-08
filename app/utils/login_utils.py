@@ -19,7 +19,7 @@ def admin_required(f):
 
         if not current_user.is_admin:  # Check if the logged-in user is an admin
             flash('You must be an admin to access this page.', 'error')
-            return redirect(url_for('main.home'))
+            return redirect(url_for('main.result'))
 
         return f(*args, **kwargs)
     return decorated_function

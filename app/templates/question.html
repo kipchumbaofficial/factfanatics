@@ -4,12 +4,13 @@
 <div class="bg-blue-500 min-h-screen flex flex-col items-center justify-between">
   <!-- Header Section -->
   <header class="w-full flex justify-between items-center px-6 py-4">
-    <a href="#" class="text-white text-2xl"><i class="fas fa-times"></i></a>
+    <a href="{{ url_for('main.categories') }}" class="text-white text-2xl"><i class="fas fa-times"></i></a>
     <div class="text-white text-lg font-bold flex items-center space-x-2">
-      <span>05</span>
-      <span class="px-2 py-1 bg-white text-blue-500 rounded-full">10</span>
+      <span>0{{ current_number }}</span>
+      <span class="text-xs">of</span>
+      <span class="px-2 py-1 bg-white text-blue-500 rounded-full">0{{ total_questions }}</span>
     </div>
-    <a href="#" class="text-white text-2xl"><i class="fas fa-heart"></i></a>
+    <a href="{{ url_for('main.categories') }}" class="text-white text-2xl"><i class="fas fa-heart"></i></a>
   </header>
 
   <!-- Question Section -->

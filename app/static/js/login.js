@@ -24,9 +24,6 @@ $(document).ready(function() {
     const auth = getAuth(app);
     const provider = new GoogleAuthProvider();
 
-    // Store the current URL before login (in case user is redirected)
-    const currentUrl = window.location.href;
-    localStorage.setItem('redirectUrl', currentUrl);
 
     $('#google-login-btn').on('click', function() {
         signInWithPopup(auth, provider)
@@ -42,9 +39,7 @@ $(document).ready(function() {
                         success: function(response) {
                             if (response.status === 'success') {
                                 // Redirect to the stored URL or default to admin
-                                const redirectUrl = localStorage.getItem('redirectUrl') || '/admin/';
-                                window.location.href = redirectUrl;
-                                localStorage.removeItem('redirectUrl'); // Clear redirect URL
+                                window.location.href = '/admin/';
                             } else {
                                 alert(response.message);
                             }

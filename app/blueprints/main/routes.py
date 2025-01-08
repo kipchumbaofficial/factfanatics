@@ -210,6 +210,7 @@ def result():
 
 
 @main_bp.route('/result', methods=['GET'])
+@login_required
 def show_result():
     """Result page to show the latest five answers with additional details"""
     # Fetch the latest five user's answers, questions, correctness, source, and link

@@ -2,9 +2,9 @@
 '''routes:
 All the routes in the auth blueprint
 '''
-from flask import request, jsonify
+from flask import request, jsonify, redirect, url_for
 from firebase_admin import auth as firebase_auth
-from flask_login import login_user
+from flask_login import login_user, login_required, logout_user
 from sqlalchemy.exc import SQLAlchemyError
 from app.extensions import db
 from app.models.user import User
@@ -91,3 +91,12 @@ def initialize_admin():
             'status': 'error',
             'message': 'Login failed.'
         }), 401
+
+
+@auth_bp.route('/logout', methods=['GET'])
+@login_required
+def logout():
+    """Logs out users
+    """
+    logout_user()
+    return redirect(url_for('main.home'))

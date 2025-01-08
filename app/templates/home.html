@@ -10,10 +10,10 @@
 
       <!-- Middle Section: Links for Desktop -->
       <div class="hidden sm:flex space-x-8">
-        <a href="#magazine" class="text-gray-600 hover:text-orange-600">Categories</a>
-        <a href="#articles" class="text-gray-600 hover:text-orange-600">Leaderboard</a>
-        <a href="#podcast" class="text-gray-600 hover:text-orange-600">Developers</a>
-        <a href="https://instagram.com/premier_magazine.ke" class="text-gray-600 hover:text-orange-600">Talk to us</a>
+        <a href="#" class="text-gray-600 hover:text-orange-600">Categories</a>
+        <a href="#" class="text-gray-600 hover:text-orange-600">Leaderboard</a>
+        <a href="#" class="text-gray-600 hover:text-orange-600">Developers</a>
+        <a href="#" class="text-gray-600 hover:text-orange-600">Talk to us</a>
       </div>
 
       <!-- Right Section: Logout & Mobile Menu Button -->
@@ -35,7 +35,7 @@
       <a href="#" class="block px-4 py-2 text-gray-600 hover:bg-orange-100">Leaderboard</a>
       <a href="#" class="block px-4 py-2 text-gray-600 hover:bg-orange-100">Leaderboard</a>
       <a href="#" class="block px-4 py-2 text-gray-600 hover:bg-orange-100">Talk to us</a>
-      <a href="#" class="block px-4 py-2 bg-red-500 text-white hover:bg-red-600 rounded-b-lg">Logout</a>
+      <a href="{{ url_for('auth.logout') }}" class="block px-4 py-2 bg-red-500 text-white hover:bg-red-600 rounded-b-lg">Logout</a>
     </div>
   </nav>
 
