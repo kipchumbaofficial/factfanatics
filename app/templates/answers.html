@@ -42,7 +42,7 @@
      {% for answer in user_answers %}
     <div class="bg-white rounded-lg shadow-md p-4 flex flex-col space-y-3">
       <!-- Question -->
-      <h2 class="text-gray-800 text-base font-bold">Question {{ loop.index }}: {{ answer.question_text }}</h2>
+      <h2 class="text-gray-800 text-base font-bold"><i class="fa-solid fa-circle-question"></i> {{ loop.index }}: {{ answer.question_text }}</h2>
 
       <!-- Answers Section -->
       <div class="flex justify-between items-center border-t pt-3">
