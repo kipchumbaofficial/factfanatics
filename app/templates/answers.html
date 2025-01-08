@@ -39,32 +39,38 @@
   <!-- Questions Section -->
   <main class="container mx-auto px-4 py-6 space-y-6">
     <!-- Question Card -->
+     {% for answer in user_answers %}
     <div class="bg-white rounded-lg shadow-md p-4 flex flex-col space-y-3">
       <!-- Question -->
-      <h2 class="text-gray-800 text-base font-bold">Question 1: In which city of Germany is the largest port?</h2>
+      <h2 class="text-gray-800 text-base font-bold">Question {{ loop.index }}: {{ answer.question_text }}</h2>
 
       <!-- Answers Section -->
       <div class="flex justify-between items-center border-t pt-3">
         <!-- User Answer -->
         <div class="flex items-center space-x-2">
           <p class="text-gray-600 text-sm font-medium"><i class="fa-solid fa-wand-magic-sparkles"></i></p>
-          <span class="text-gray-800 font-bold">Hamburg</span>
-          <i class="fas fa-check-circle text-green-500 text-lg"></i> <!-- Tick for correct -->
+          <span class="text-gray-800 font-bold">{{ answer.user_answer }}</span>
+          {% if answer.is_correct %}
+            <i class="fas fa-check-circle text-green-500 text-lg"></i>
+            {% else %}
+            <i class="fas fa-times-circle text-red-500 text-lg"></i>
+          {% endif %}
         </div>
 
         <!-- Correct Answer -->
         <div class="flex items-center space-x-2">
           <p class="text-gray-600 text-sm font-medium">Correct:</p>
-          <span class="text-gray-800 font-bold">Hamburg</span>
+          <span class="text-gray-800 font-bold">{{ answer.correct_answer }}</span>
         </div>
       </div>
 
       <!-- Source Section -->
       <div class="flex justify-between items-center border-t pt-3">
-        <p class="text-gray-600 text-sm">Source: Wikipedia</p>
-        <a href="https://en.wikipedia.org" target="_blank" class="text-blue-500 hover:underline text-sm">Read more</a>
+        <p class="text-gray-600 text-sm">Source: {{ answer.source }}</p>
+        <a href="{{ answer.link }}" target="_blank" class="text-blue-500 hover:underline text-sm">Read more</a>
       </div>
     </div>
+    {% endfor %}
 
     <!-- Duplicate and Update for Other Questions -->
     <div class="bg-white rounded-lg shadow-md p-4 flex flex-col space-y-3">

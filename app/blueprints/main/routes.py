@@ -211,6 +211,21 @@ def result():
 
 @main_bp.route('/result', methods=['GET'])
 def show_result():
-    """ Log in page
-    """
-    return render_template('answers.html')
+    """Result page to show the latest five answers with additional details"""
+    # Fetch the latest five user's answers, questions, correctness, source, and link
+    user_answers = db.session.query(
+        UserAnswer.id,
+        Question.question.label('question_text'),
+        UserAnswer.user_answer,
+        Question.answer.label('correct_answer'),
+        UserAnswer.is_correct,
+        Question.source,
+        Question.link
+    ).join(Question, UserAnswer.question_id == Question.id)\
+    .filter(UserAnswer.user_id == current_user.id)\
+    .order_by(UserAnswer.answered_at.desc())\
+    .limit(5)\
+    .all()
+
+    # Render template
+    return render_template('answers.html', user_answers=user_answers)
