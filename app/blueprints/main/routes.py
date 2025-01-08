@@ -140,7 +140,8 @@ def result():
             if not question:
                 continue  # Skip if question is not found
 
-            is_correct = question.answer.lower() == user_answer.lower() if user_answer else False
+            # Strip spaces and compare answers
+            is_correct = question.answer.strip().lower() == user_answer.strip().lower() if user_answer else False
             if is_correct:
                 score += 1
 
