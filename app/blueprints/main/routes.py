@@ -207,3 +207,10 @@ def result():
         username=current_user.username,
         rank=user_rank
     )
+
+
+@main_bp.route('/result', methods=['GET'])
+def show_result():
+    """ Log in page
+    """
+    return render_template('answers.html')
