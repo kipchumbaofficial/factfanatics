@@ -56,12 +56,13 @@
             <i class="fas fa-times-circle text-red-500 text-lg"></i>
           {% endif %}
         </div>
-
+        {% if not answer.is_correct %}
         <!-- Correct Answer -->
-        <div class="flex items-center space-x-2">
+        <div class="p-1 flex items-center space-x-2">
           <p class="text-gray-600 text-sm font-medium">Correct:</p>
           <span class="text-gray-800 font-bold">{{ answer.correct_answer }}</span>
         </div>
+        {% endif %}
       </div>
 
       <!-- Source Section -->
