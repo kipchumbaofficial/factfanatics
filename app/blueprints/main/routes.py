@@ -45,13 +45,13 @@ def questions(category):
 
     session['current_category'] = category
 
+    root = Category.query.filter_by(name=category).first()
+    if not root:
+        return "Category not found", 404
+
     # Check if questions for the quiz are already stored in the session
     if 'question_ids' not in session or session.get('current_category') != category:
-        # Fetch root and subcategories
-        root = Category.query.filter_by(name=category).first()
-        if not root:
-            return "Category not found", 404
-
+        # Fetch subcategories
         all_categories = [root] + root.subcategories
         category_ids = [category.id for category in all_categories]
 
@@ -72,7 +72,7 @@ def questions(category):
     # Check if the index exceeds the number of questions
     question_ids = session['question_ids']
     if current_index >= len(question_ids):
-        return redirect(url_for('main.result'))
+        return redirect(url_for('main.sub_categories', category_id=root.id))
 
     # Fetch the current question
     current_question_id = question_ids[current_index]
@@ -197,7 +197,7 @@ def result():
     ).group_by(Score.user_id, Score.category_id).subquery()
 
     # Retrieve the rank of the current user
-    user_rank = db.session.query(rank_query.c.rank).filter(rank_query.c.user_id == current_user.id).scalar()
+    user_rank = db.session.query(rank_query.c.rank).filter(rank_query.c.user_id == current_user.id).first()[0]
 
     # Render the result page
     return render_template(
@@ -231,3 +231,26 @@ def show_result():
 
     # Render template
     return render_template('answers.html', user_answers=user_answers)
+
+
+@main_bp.route('/subcategories/<int:category_id>', methods=['GET'])
+def sub_categories(category_id):
+    """Selecting Subcategories for a Given Category"""
+    # Fetch the category by ID
+    category = Category.query.get(category_id)
+
+    if not category:
+        # Handle invalid category IDs gracefully
+        flash("Category not found.", "error")
+        return redirect(url_for('main.home'))
+
+    if not category.subcategories:
+        # Redirect to the results page when no subcategories exist
+        return redirect(url_for('main.result'))
+
+    # Render the subcategories for the current category
+    return render_template(
+        'sub-categories.html',
+        category=category,
+        subcategories=category.subcategories
+    )

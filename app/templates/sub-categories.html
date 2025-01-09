@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="bg-blue-500 min-h-screen flex flex-col">
+  <!-- Header Section -->
+  <header class="container mx-auto px-4 py-6 flex justify-between items-center">
+    <h1 class="text-white text-3xl font-bold">Continue Playing</h1>
+    <div class="flex space-x-4">
+      <a href="#" class="text-white text-2xl"><i class="fas fa-heart"></i></a>
+      <a href="#" class="text-white text-2xl"><i class="fas fa-user"></i></a>
+      <a href="#" class="text-white text-2xl"><i class="fas fa-bars"></i></a>
+    </div>
+  </header>
+
+  <!-- Subtitle -->
+  <p class="container mx-auto px-4 text-white text-lg">Pick your favorite!</p>
+
+  <!--Sub-Categories Section -->
+  <main class="container mx-auto px-4 py-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+    <!-- Sub-Category Card-->
+     {% for category in subcategories %}
+    <a href="{{ url_for('main.questions', category=category.name) }}" class="bg-gradient-to-r from-green-400 to-blue-400 rounded-lg p-6 flex items-center space-x-4 shadow-lg">
+      <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center">
+        <i class="fa-solid fa-gamepad text-green-500 text-3xl"></i>
+      </div>
+      <div>
+        <h2 class="text-white text-2xl font-bold">{{ category.name }}</h2>
+        <p class="text-white">Level 1: Beginner</p>
+      </div>
+    </a>
+    {% endfor %}
+  </main>
+
+  <!-- Footer Section -->
+  <footer class="mt-auto py-4 text-center text-white">
+    <p>&copy; 2025 FactFanatics. All rights reserved.</p>
+  </footer>
+</div>
+{% endblock %}
