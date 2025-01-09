@@ -55,6 +55,7 @@ class Score(db.Model):
         db.ForeignKey('categories.id'),
         nullable=False, index=True)
     score = db.Column(db.Integer, nullable=False)
+    total_questions = db.Column(db.Integer, nullable=False, default=0)
     created_at = db.Column(db.DateTime, default=datetime.now)
 
     # Relationship

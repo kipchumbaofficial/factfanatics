@@ -2,8 +2,8 @@
 ''' routes:
 Module for all the routes under main blueprint
 '''
-from flask import render_template, request, session, redirect, url_for, flash
-from sqlalchemy import func
+import random
+from flask import render_template, session, redirect, url_for, flash
 from flask_login import login_required, current_user
 from app.extensions import db
 from app.forms.user import AnswerForm
@@ -37,176 +37,164 @@ def categories():
         categories=parent_categories)
 
 
-@main_bp.route('/questions/<category>')
+@main_bp.route('/questions/<category>', methods=['GET', 'POST'])
 def questions(category):
-    '''Selects questions randomly for user
-    '''
+    """Fetch random questions for the selected category and manage quiz flow."""
     form = AnswerForm()
 
-    session['current_category'] = category
+    # Fetch the category by name
+    current_category = Category.query.filter_by(name=category).first()
+    if not current_category:
+        flash("Category not found.", "error")
+        return redirect(url_for('main.index'))
 
-    root = Category.query.filter_by(name=category).first()
-    if not root:
-        return "Category not found", 404
-
-    # Check if questions for the quiz are already stored in the session
-    if 'question_ids' not in session or session.get('current_category') != category:
-        # Fetch subcategories
-        all_categories = [root] + root.subcategories
-        category_ids = [category.id for category in all_categories]
-
-        # Fetch all question IDs for the category
-        question_ids = db.session.query(CategoryQuestion.question_id).filter(
+    # Initialize session for a new category if not already present
+    if category not in session.get('questions', {}):
+        # Fetch question IDs for the current category
+        category_ids = [current_category.id] + [sub.id for sub in current_category.subcategories]
+        question_ids_query = db.session.query(CategoryQuestion.question_id).filter(
             CategoryQuestion.category_id.in_(category_ids)
-        ).order_by(func.random()).limit(5)
-        question_ids = [q[0] for q in question_ids]
+        )
+        question_ids = [q[0] for q in question_ids_query.all()]
 
-        # Save question list and current category in the session
-        session['question_ids'] = question_ids
+        # Randomly sample 5 questions
+        if len(question_ids) > 5:
+            question_ids = random.sample(question_ids, 5)
+
+        # Add new category to the session
+        session.setdefault('questions', {})[category] = {
+            'question_ids': question_ids,
+            'answers': []
+        }
         session['current_category'] = category
-        session['current_index'] = 0  # Start from the first question
+        session['current_index'] = 0
 
-    # Get the current question index
-    current_index = session.get('current_index', 0)
+    # Retrieve session data for the current category
+    current_index = session['current_index']
+    question_data = session['questions'][category]
+    question_ids = question_data['question_ids']
 
-    # Check if the index exceeds the number of questions
-    question_ids = session['question_ids']
+    question_data['id'] = current_category.id
+
+    # Check if quiz for the category is complete
     if current_index >= len(question_ids):
-        return redirect(url_for('main.sub_categories', category_id=root.id))
+        # Redirect to subcategories or score page
+        subcategories = current_category.subcategories
+        if subcategories:
+            return redirect(url_for('main.sub_categories', category_id=current_category.id))
+        else:
+            return redirect(url_for('main.result'))
 
     # Fetch the current question
     current_question_id = question_ids[current_index]
     current_question = Question.query.get(current_question_id)
+    if not current_question:
+        flash("Question not found.", "error")
+        return redirect(url_for('main.index'))
 
-    # Pass current question number and total questions
+    # Process submitted answer
+    if form.validate_on_submit():
+        submitted_answer = form.answer.data
+        question_data['answers'].append({
+            'question_id': current_question_id,
+            'answer': submitted_answer
+        })
+        session['current_index'] += 1
+        print(session['questions'])
+        return redirect(url_for('main.questions', category=category))
+
+    # Render the current question
     return render_template(
         'question.html',
         question=current_question,
         current_number=current_index + 1,
         total_questions=len(question_ids),
-        form=form
+        form=form,
+        category=current_category
     )
 
 
-@main_bp.route('/submit-answer', methods=['POST'])
-def submit_answer():
-    '''Submit answer t be added to session
-    '''
-    # Get the user's answer and current question
-    question_id = request.form.get('question_id')
-    user_answer = request.form.get('answer')
-
-    # Optionally, validate and store the answer in the session
-    if 'answers' not in session:
-        session['answers'] = {}
-    session['answers'][question_id] = user_answer
-
-    # Increment the current question index
-    session['current_index'] = session.get('current_index', 0) + 1
-
-    # Redirect to the questions route
-    category = session.get('current_category')
-    if not category:
-        return redirect(url_for('main.home'))  # Redirect to home if category is missing
-    return redirect(url_for('main.questions', category=category))
-
-
 @main_bp.route('/score', methods=['GET', 'POST'])
-@login_required  # Ensure the user is logged in
+@login_required
 def result():
-    """Handles both quiz result submission and displaying the latest results."""
+    """Process and display quiz results or fetch the latest score if no session data exists."""
 
-    score, total_questions, category_name = None, None, None
-
-    if 'answers' in session and 'question_ids' in session and 'current_category' in session:
-        # Session data exists, process quiz results
-        answers = session.get('answers', {})
-        question_ids = session.get('question_ids', [])
-        category_name = session.get('current_category')
-
-        # Fetch category
-        category = Category.query.filter_by(name=category_name).first()
-        if not category:
-            flash("Invalid category. Please try again.", "error")
+    # Handle case where no questions are in session
+    if 'questions' not in session:
+        latest_score = Score.query.filter_by(user_id=current_user.id).order_by(Score.id.desc()).first()
+        scores = Score.query.order_by(Score.score.desc()).all()
+        rank = next((i + 1 for i, s in enumerate(scores) if s.user_id == current_user.id), None)
+        if latest_score:
+            return render_template(
+                'result.html',
+                score=latest_score.score,
+                total_questions=latest_score.total_questions,
+                username=current_user.username,
+                rank=rank  # Rank might not be relevant here
+            )
+        else:
+            flash("No quiz data found and no previous scores available. Please start a quiz.", "error")
             return redirect(url_for('main.home'))
 
-        # Calculate score
-        total_questions = len(question_ids)
-        score = 0
-        for question_id in question_ids:
-            user_answer = answers.get(str(question_id), None)
+    # Process quiz results
+    total_score = 0
+    total_questions = 0
+    user_answers = []
+    category_id = None  # Default category_id
+
+    for category, data in session['questions'].items():
+        question_ids = data['question_ids']
+        answers = data['answers']
+        category_id = data.get('id')
+        print(category_id)
+
+        for answer in answers:
+            question_id = answer['question_id']
+            user_answer = answer['answer']
             question = Question.query.get(question_id)
 
-            if not question:
-                continue  # Skip if question is not found
+            if question:
+                is_correct = question.answer.strip().lower() == user_answer.strip().lower()
+                if is_correct:
+                    total_score += 1
 
-            # Strip spaces and compare answers
-            is_correct = question.answer.strip().lower() == user_answer.strip().lower() if user_answer else False
-            if is_correct:
-                score += 1
+                user_answers.append(UserAnswer(
+                    user_id=current_user.id,
+                    question_id=question_id,
+                    user_answer=user_answer,
+                    is_correct=is_correct
+                ))
+            total_questions += 1
 
-            # Save user answer
-            user_answer_entry = UserAnswer(
-                user_id=current_user.id,
-                question_id=question_id,
-                user_answer=user_answer,
-                is_correct=is_correct
-            )
-            db.session.add(user_answer_entry)
+    # Save all answers to the database
+    db.session.bulk_save_objects(user_answers)
+    db.session.commit()
 
-        # Save score to the database
-        user_score = Score(
-            user_id=current_user.id,
-            category_id=category.id,
-            score=score
-        )
-        db.session.add(user_score)
-        db.session.commit()
+    # Save the user's total score
+    user_score = Score(
+        user_id=current_user.id,
+        category_id=category_id,  # Ensure category_id is passed
+        score=total_score / total_questions,
+        total_questions=total_questions
+    )
+    db.session.add(user_score)
+    db.session.commit()
 
-        # Clear session data
-        session.pop('answers', None)
-        session.pop('question_ids', None)
-        session.pop('current_category', None)
-        session.pop('current_index', None)
+    # Calculate rank
+    scores = Score.query.order_by(Score.score.desc()).all()
+    rank = next((i + 1 for i, s in enumerate(scores) if s.user_id == current_user.id), None)
 
-    else:
-        # No session data, fetch the latest score
-        user_score = (
-            db.session.query(Score)
-            .filter_by(user_id=current_user.id)
-            .order_by(Score.id.desc())
-            .first()
-        )
+    # Clear session
+    session.pop('questions', None)
+    session.pop('current_category', None)
+    session.pop('current_index', None)
 
-        if not user_score:
-            flash("No quiz results found. Please complete a quiz to see your results.", "warning")
-            return redirect(url_for('main.home'))
-
-        # Set variables from the latest score
-        score = user_score.score
-        total_questions = 5
-        category_name = user_score.category.name  # Assuming a relationship with `Category`
-
-    # Calculate rank for the user in the latest category
-    rank_query = db.session.query(
-    Score.user_id,
-    func.rank().over(
-        order_by=func.max(Score.score).desc(),
-        partition_by=Score.category_id
-    ).label('rank')
-    ).group_by(Score.user_id, Score.category_id).subquery()
-
-    # Retrieve the rank of the current user
-    user_rank = db.session.query(rank_query.c.rank).filter(rank_query.c.user_id == current_user.id).first()[0]
-
-    # Render the result page
     return render_template(
         'result.html',
-        score=score,
+        score=total_score,
         total_questions=total_questions,
-        category=category_name,
         username=current_user.username,
-        rank=user_rank
+        rank=rank  # Pass the rank to the template
     )
 
 
@@ -226,7 +214,7 @@ def show_result():
     ).join(Question, UserAnswer.question_id == Question.id)\
     .filter(UserAnswer.user_id == current_user.id)\
     .order_by(UserAnswer.answered_at.desc())\
-    .limit(5)\
+    .limit(15)\
     .all()
 
     # Render template

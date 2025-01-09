@@ -4,7 +4,7 @@ All the routes in the auth blueprint
 '''
 from flask import request, jsonify, redirect, url_for
 from firebase_admin import auth as firebase_auth
-from flask_login import login_user, login_required, logout_user
+from flask_login import login_user, login_required, logout_user, current_user
 from sqlalchemy.exc import SQLAlchemyError
 from app.extensions import db
 from app.models.user import User
@@ -100,3 +100,12 @@ def logout():
     """
     logout_user()
     return redirect(url_for('main.home'))
+
+
+@auth_bp.route('/check-login-status', methods=['GET'])
+def check_login_status():
+    """ Return the login status of the user
+    """
+    return jsonify({
+        'logged_in': current_user.is_authenticated
+    })

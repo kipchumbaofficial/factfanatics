@@ -4,9 +4,16 @@
 <div class="bg-blue-500 min-h-screen flex flex-col">
   <!-- Header Section -->
   <header class="container mx-auto px-4 py-6 flex justify-between items-center">
-    <h1 class="text-white text-3xl font-bold">Continue Playing</h1>
+    <h1 class="text-white text-3xl font-bold">Continue...</h1>
     <div class="flex space-x-4">
-      <a href="#" class="text-white text-2xl"><i class="fas fa-heart"></i></a>
+       <!-- Score Button -->
+      <button
+        id="skipToResultButton"
+        data-url="{{ url_for('main.result') }}"
+        class="text-white text-2xl focus:outline-none"
+      >
+      <i class="fa-solid fa-file-export"></i>
+      </button>
       <a href="#" class="text-white text-2xl"><i class="fas fa-user"></i></a>
       <a href="#" class="text-white text-2xl"><i class="fas fa-bars"></i></a>
     </div>
@@ -36,4 +43,16 @@
     <p>&copy; 2025 FactFanatics. All rights reserved.</p>
   </footer>
 </div>
+<!-- jQuery Script -->
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+  $(document).ready(function () {
+    $('#skipToResultButton').click(function () {
+      const resultUrl = $(this).data('url'); // Get the URL from the data attribute
+      if (confirm('You are about to skip to the results. Are you sure?')) {
+        window.location.href = resultUrl; // Redirect to the URL
+      }
+    });
+  });
+</script>
 {% endblock %}
