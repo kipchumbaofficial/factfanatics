@@ -101,6 +101,7 @@
           success: function (response) {
             if (!response.logged_in) {
               // User is not logged in, show login modal
+              $("#answer-form").submit();
               $("#login-modal").removeClass("hidden").addClass("flex");
             } else {
               // User is logged in, submit the form
