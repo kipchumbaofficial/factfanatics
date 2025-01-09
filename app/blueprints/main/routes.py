@@ -203,6 +203,7 @@ def result():
 def show_result():
     """Result page to show the latest five answers with additional details"""
     # Fetch the latest five user's answers, questions, correctness, source, and link
+    latest_score = Score.query.filter_by(user_id=current_user.id).order_by(Score.id.desc()).first()
     user_answers = db.session.query(
         UserAnswer.id,
         Question.question.label('question_text'),
@@ -214,8 +215,9 @@ def show_result():
     ).join(Question, UserAnswer.question_id == Question.id)\
     .filter(UserAnswer.user_id == current_user.id)\
     .order_by(UserAnswer.answered_at.desc())\
-    .limit(15)\
+    .limit(latest_score.total_questions)\
     .all()
+
 
     # Render template
     return render_template('answers.html', user_answers=user_answers)
