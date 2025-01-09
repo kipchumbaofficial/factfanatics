@@ -84,45 +84,6 @@
 
 <!-- JavaScript -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-  $(document).ready(function () {
-    // Handle Submit Answer
-    $("#submit-answer").click(function () {
-      // Get current question number and total questions from data attributes
-      const currentNumber = parseInt($("#quiz-container").data("current-number"));
-      const totalQuestions = parseInt($("#quiz-container").data("total-questions"));
-
-      // Check if it's the last question
-      if (currentNumber === totalQuestions) {
-        // Make AJAX request to check login
-        $.ajax({
-          url: "/auth/check-login-status",
-          method: "GET",
-          success: function (response) {
-            if (!response.logged_in) {
-              // User is not logged in, show login modal
-              $("#answer-form").submit();
-              $("#login-modal").removeClass("hidden").addClass("flex");
-            } else {
-              // User is logged in, submit the form
-              $("#answer-form").submit();
-            }
-          },
-          error: function () {
-            alert("An error occurred while checking login status.");
-          },
-        });
-      } else {
-        // If not the last question, submit the form
-        $("#answer-form").submit();
-      }
-    });
-
-    // Close Modal
-    $("#close-modal").click(function () {
-      $("#login-modal").removeClass("flex").addClass("hidden");
-    });
-  });
-</script>
+<script src="{{ url_for('static', filename='js/submit_answer.js') }}"></script>
 <script type="module" src="{{ url_for('static', filename='js/login_modal.js') }}"></script>
 {% endblock %}

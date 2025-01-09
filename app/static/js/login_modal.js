@@ -41,7 +41,12 @@ $(document).ready(function() {
                         success: function(response) {
                             if (response.status === 'success') {
                                 // Redirect to the stored URL or default to admin
-                                window.location.href = `/subcategories/${category_id}`;
+                                // Check if there's a pending action after login
+                                const pendingAction = sessionStorage.getItem("pendingAction");
+                                if (pendingAction === "submitLastAnswer") {
+                                    sessionStorage.removeItem("pendingAction");
+                                    $("#answer-form").submit(); // Submit after successful login
+                                }
                             } else {
                                 alert(response.message);
                             }
