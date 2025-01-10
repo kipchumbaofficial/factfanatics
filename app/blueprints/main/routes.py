@@ -127,7 +127,7 @@ def result():
         if latest_score:
             return render_template(
                 'result.html',
-                score=latest_score.score,
+                score=latest_score.score * latest_score.total_questions,
                 total_questions=latest_score.total_questions,
                 username=current_user.username,
                 rank=rank  # Rank might not be relevant here
